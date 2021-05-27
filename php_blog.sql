@@ -156,3 +156,14 @@ SELECT * FROM board;
 SELECT * FROM article;
 
 
+
+
+
+
+
+
+
+
+
+
+

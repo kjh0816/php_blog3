@@ -15,3 +15,8 @@ div {
     size: 100px;
     
   }
+
+  .userDeleteModify{
+    display: inline-block;
+    
+  }

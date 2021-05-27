@@ -19,7 +19,8 @@ $loginPw = $_GET['loginPw'];
 
 $sql = "
 SELECT * FROM `member`
-WHERE loginId = '$loginId';
+WHERE loginId = '$loginId'
+AND delStatus = 0;
 ";
 
 

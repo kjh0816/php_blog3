@@ -17,10 +17,11 @@
   <?php
 
 
-
+  if($loginPage){
   if ( isset($_SESSION['loginedMemberId']) ) { ?>
   <a class="logout_button" onClick="if(!confirm('로그아웃 하시겠습니까?')){return false}" href="/usr/member/doLogout.php">로그아웃</a>
   <?php }else{ ?>
     <a class="login_button" href="/usr/member/login.php">로그인</a>
   <?php } ?>
+<?php } ?>
   <hr>
