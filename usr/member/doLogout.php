@@ -1,5 +1,6 @@
 <?php 
-unset($_SESSION);
+require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
+unset($_SESSION['loginedMemberId']);
 ?>
 <script>
 alert('로그아웃 되었습니다.');

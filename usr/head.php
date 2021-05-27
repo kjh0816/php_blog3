@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,14 @@
   <h1><?=$pageTitle?></h1>
   <hr>
   <!-- 로그인된 상태일 경우, 로그아웃 버튼 생성-->
-  <?php if ( isset($_SESSION['loginedMemberId']) ) { ?>
-  <a class="logout_button" href="../member/doLogout.php">로그아웃</a>
+  
+  <?php
+
+
+
+  if ( isset($_SESSION['loginedMemberId']) ) { ?>
+  <a class="logout_button" onClick="if(!confirm('로그아웃 하시겠습니까?')){return false}" href="/usr/member/doLogout.php">로그아웃</a>
+  <?php }else{ ?>
+    <a class="login_button" href="/usr/member/login.php">로그인</a>
   <?php } ?>
   <hr>
