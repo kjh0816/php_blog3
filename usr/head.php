@@ -13,6 +13,7 @@
   <hr>
   <!-- 로그인된 상태일 경우, 로그아웃 버튼 생성-->
   
+  <div class="home"><a href="/usr/member/userHome.php">HOME</a></div>
   <?php
 
 
