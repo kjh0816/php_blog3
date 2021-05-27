@@ -42,7 +42,7 @@ if($article == null){
 <hr>
 
 <div>
-<a href="doModify.php?id=<?=$id?>">수정하기</a>
+<a href="modify.php?id=<?=$id?>">수정하기</a>
 <a onClick="if(!confirm('이 게시물을 삭제하시겠습니까?')){return false}" href="doDelete.php?id=<?=$id?>">삭제하기</a>
 </div>
 <?php require_once __DIR__ . "/../foot.php";   
