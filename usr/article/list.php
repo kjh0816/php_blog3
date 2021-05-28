@@ -13,7 +13,7 @@ ORDER BY id DESC;
 
 $articles = DB__getRows($sql);
 
-
+$loginPage = true;
 $pageTitle = "게시물 리스트";
 
 ?>

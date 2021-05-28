@@ -155,7 +155,8 @@ SELECT * FROM `member`;
 SELECT * FROM board;
 SELECT * FROM article;
 
-
+SELECT * FROM board
+WHERE id = 1;
 
 
 
