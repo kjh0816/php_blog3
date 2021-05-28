@@ -1,7 +1,7 @@
 <?php 
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
-// DB 함수도 쓸 수 있고, 세션도 불러왔다.
+
 
 
 // 최신순 정렬
@@ -13,24 +13,48 @@ ORDER BY id DESC;
 
 $articles = DB__getRows($sql);
 
+
+
+
+?>
+<?php 
 $loginPage = true;
 $pageTitle = "게시물 리스트";
-
 ?>
 <?php require_once __DIR__ . "/../head.php"; ?>
 <div>
-  <a href="../member/user.php">내 정보</a>
   <a href="write.php">글 작성</a>
 </div>
 <hr>
 <?php foreach($articles as $article){?>
-    <?php $articleDetailUri = "detail.php?id=${article['id']}"?>
-    <a href="<?=$articleDetailUri?>">번호 : <?=$article['id']?></a><br>
+    <?php
+
+    $sqlGetMemberById = "
+    SELECT * FROM member
+    WHERE id = ${article['memberId']};
+    ";
+    
+    $sqlGetBoardById = "
+    SELECT * FROM board
+    WHERE id = ${article['boardId']};
+    ";
+    
+    
+    $member = DB__getRow($sqlGetMemberById);
+    $board = DB__getRow($sqlGetBoardById);
+
+    $articleDetailUri = "detail.php?id=${article['id']}"
+    
+    ?>
+    
     <div>
+    번호 : <?=$article['id']?><br>
+    게시판 : <?=$board['name']?><br>
+    <a href="<?=$articleDetailUri?>">제목 : <?=$article['title']?></a><br>   
     작성날짜 : <?=$article['regDate']?><br>
-    수정날짜 : <?=$article['updateDate']?><br>
+    작성자 : <?=$member['nickname']?>
     </div>
-    <a href="<?=$articleDetailUri?>">제목 : <?=$article['title']?></a><br>
+    
     <hr>
 <?php } ?>
 <?php require_once __DIR__ . "/../foot.php"; ?>

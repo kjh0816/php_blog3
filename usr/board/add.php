@@ -6,14 +6,7 @@ if(!isset($_SESSION['loginedMemberId'])){
     exit;
 }
 
-$memberId = $_SESSION['loginedMemberId'];
 
-$sqlGetMember = "
-SELECT * FROM `member`
-WHERE id = ${memberId};
-";
-
-$member = DB__getRow($sqlGetMember);
 
 ?>
 

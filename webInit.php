@@ -9,5 +9,5 @@
 session_start();
 require_once __DIR__ . "/util.php";
 
-$dbConn = mysqli_connect("127.0.0.1", "jhmysql", "sbs123414", "php_blog");
+$dbConn = mysqli_connect("127.0.0.1", "jhmysql", "1234", "php_blog");
 ?>
