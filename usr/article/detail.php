@@ -36,6 +36,8 @@ WHERE id = ${article['boardId']};
 $member = DB__getRow($sqlGetMemberById);
 $board = DB__getRow($sqlGetBoardById);
 
+$memberId = $member['id'];
+
 ?>
 
 
@@ -71,6 +73,44 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
 
     ?>
     <!-- 조회수 관련 (끝) -->
+    <!-- 좋아요 관련 (시작)  -->
+    <?php 
+
+        $sqlGetHeart = "
+        SELECT digitalCode FROM articleLiked
+        WHERE memberId = ${memberId}
+        AND articleId = ${id};
+        ";
+
+        
+
+        $array = DB__getRow($sqlGetHeart);
+        if(!empty($array)){
+            
+        $heart = $array['digitalCode'];
+
+        }else{
+            
+            $sqlInsertZero = "
+            INSERT INTO articleLiked
+            SET memberId = ${memberId},
+            articleId = ${id},
+            digitalCode = 0;
+            ";
+            
+            mysqli_query($dbConn, $sqlInsertZero);
+
+
+            $heart = 0;
+        }
+        
+
+        
+    
+    
+    ?>
+
+    <!-- 좋아요 관련 (시작)  -->
 
 <?php 
 $loginPage = true;
@@ -91,8 +131,20 @@ $pageTitle = "${id}번 게시물 상세페이지";
     작성날짜 : <?=$article['regDate']?><br>
     수정날짜 : <?=$article['updateDate']?><br>
     내용 : <?=$article['body']?><br>
-    좋아요 : <?=$article['liked']?><br>
+    
 </div>
+<?php if($heart == 1){ ?>
+    
+    <!-- 값이 1인 경우, 붉은 하트를 보여줄 것 / 클릭 시 0(좋아요 해제)으로 바뀐다. -->
+    <a href="liked.php?memberId=<?=$memberId?>&articleId=<?=$id?>&digitalCode=0"><i style="color:red;" class="fas fa-heart"></i></a>
+
+<?php }else{ ?>  
+    <!-- 값이 없거나 0인 경우, 회색 하트를 보여줄 것 / 클릭 시 1(좋아요)으로 바뀐다. -->
+    <a href="liked.php?memberId=<?=$memberId?>&articleId=<?=$id?>&digitalCode=1"><i class="far fa-heart"></i></a>
+
+
+<?php        } ?>
+<?=$article['liked']?><br>
 <hr>
 
 <div>

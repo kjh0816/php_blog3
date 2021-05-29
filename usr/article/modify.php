@@ -2,6 +2,11 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
+if(!isset($_SESSION['loginedMemberId'])){
+    echo "로그인 후 이용 가능합니다.";
+    exit;
+}
+
 if(!isset($_GET['id'])){
     echo "id를 입력해주세요.";
     exit;
