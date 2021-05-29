@@ -15,72 +15,81 @@ $pageTitle = "게시물 리스트";
 ?>
 
 <?php 
-require_once __DIR__ . '/../haed.php';
+require_once __DIR__ . '/../head.php';
 ?>
 
 <!-- 실제 게시판 및 페이징 레이아웃에 필요한 부분 시작-->
-    <div class="container">
-        <br/>              
-        <div class="row"> <!-- 메인 글 영역-->
-            <div class="col-12" id="content">
-                <!-- 게시물 목록 -->
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-center">번호</th>
-                            <th scope="col" class="text-center">제목</th>
-                            <th scope="col" class="text-center">작성자</th>
-                            <th scope="col" class="text-center">작성일</th>
-                            <th scope="col" class="text-center">조회수</th>
-                        </tr>
-                    </thead>
+ 
+    
+
+                    
 
                     <?php
                     // 페이징 구현                                                                   
-                    $sql = mq("SELECT * FROM board");
-                    $
+                    // $sql = mq("SELECT * FROM board");
+                    
+                    
 
-                    $sqlGetBoards = "
+                    $dbConn = mysqli_connect("127.0.0.1", "jhmysql", "1234", "php_blog");
+
+                    $sqlGetAllArticles = "
                     SELECT * FROM article
                     ";
-                    $boards = DB__getRows($sqlGetBoards); // 모든 게시물 불러오기
                     
-                    $total_record = mysqli_num_rows($boards); // 불러올 게시물 총 갯수 카운트
+                    
 
+                    $allArticles = mysqli_query($dbConn, $sqlGetAllArticles);// 모든 게시물 불러오기
+                    
+                    $total_record = mysqli_num_rows($allArticles); // 불러올 게시물 총 갯수 카운트
                     $itemCountInAPage = 10; // 한 페이지에 보여줄 게시물 개수  >> itemCountInAPage
-                    $block_cnt = 5; // 하단에 표시할 블록 당 페이지 개수
-                    $block_num = ceil($page / $block_cnt); // 현재 페이지 블록
-                    $block_start = (($block_num - 1) * $block_cnt) + 1; // 블록의 시작 번호
+                    $block_cnt = 5; // 한 블록에 표시할 페이지 번호 갯수
+                    $block_num = ceil($page / $block_cnt); // 현재 페이지가 해당하는 블록 
+                    // 현재 페이지가 5씩 넘어갈 때마다 한 블록씩 넘어간다.
+                    $block_start = (($block_num - 1) * $block_cnt) + 1; // 블록 내, 페이지 시작 번호
+                    // 현재 블록이 1이면, 블록 시작번호 = 1 , 2이면 , 시작번호 = 6
                     $block_end = $block_start + $block_cnt - 1; // 블록의 마지막 번호
+                    // 1~5 / 6~10 ...
 
-                    $total_page = ceil($total_record / $itemCountInAPage); // 페이징한 페이지 수
+                    $total_page = ceil($total_record / $itemCountInAPage); // 게시물 갯수에 따른 총 페이지 수
                     if($block_end > $total_page){
                         $block_end = $total_page; // 블록 마지막 번호가 총 페이지 수보다 크면 마지막 페이지 번호를 총 페이지 수로 지정함
                     }
                     $total_block = ceil($total_page / $block_cnt); // 블록의 총 개수
-                    $page_start = ($page - 1) * $itemCountInAPage; // 페이지의 시작 (SQL문에서 LIMIT 조건 걸 때 사용)
+                    $article_start = ($page - 1) * $itemCountInAPage; // 페이지의 시작 (SQL문에서 LIMIT 조건 걸 때 사용)
 
-                    // 게시물 목록 가져오기                
-                    $sql2 = mq("SELECT * FROM board ORDER BY in_num DESC LIMIT $page_start, $itemCountInAPage"); // $page_start를 시작으로 $list의 수만큼 보여주도록 가져옴                                   
+                    // itemCountInAPage만큼의 게시물 가져오기
+                    $sqlGetArticles = "
+                    SELECT * FROM article
+                    ORDER BY id DESC
+                    LIMIT $article_start, $itemCountInAPage;
+                    ";
+                    $queryGetArticless = mysqli_query($dbConn ,$sqlGetArticles);
+                    // mysqli_fetch_assoc()을 하지 않고, 데이터를 가공해서 배열에 담을 예정
+                    // $article_start를 시작으로 $itemCountInAPage의 수만큼 보여주도록 가져옴 
+
+                    ?>
                     
-                    while($board = $sql2->fetch_array()){
-                        $title=$board["title"];
+                    
+                    
+                    
+
+
+
+                    <?php 
+
+                    
+                    
+
+                    // 페이징 단계에서 보여줄 형태로 가공해서 배열에 담는다.
+                    while($article = $queryGetArticless -> fetch_array()){
+                        $title=$article['title'];
                         /* 제목 글자수가 30이 넘으면 ... 표시로 처리해주기 */
-                        if(strlen($title)>30){
-                            $title=str_replace($board["title"],mb_substr($board["title"],0,30,"utf-8")."...",$board["title"]);
+                        if(strlen($title) > 30){
+                            $title=str_replace($article["title"],mb_substr($article["title"], 0, 30, "utf-8")."...", $article['title']);
                         }                                
                     ?>
 
-                    <tbody>                                        
-                        <tr>                                                                                  
-                            <td width="70" class="text-center"><?=$board['num'];?></td>
-                            <td width="300">                                            
-                                <span class="read_check" style="cursor:pointer" data-action="./read.php?num=<?=$board['num']?>"><?=$title?></span>                            
-                            <td width="70" class="text-center"><?=$board["writer"];?></td>
-                            <td width="90" class="text-center"><?=$board["wdate"];?></td>
-                            <td width="50" class="text-center"><?=$board["views"];?></td>                                            
-                        </tr>
-                    </tbody>
+                    
                     <?php                
                     }                                                                                                            
                     ?>

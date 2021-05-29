@@ -158,7 +158,16 @@ SELECT * FROM article;
 
 
 
+SELECT COUNT(*) FROM article;
 
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+boardId = 1,
+title = '테스트',
+`body`= '테스트';
 
 
 
