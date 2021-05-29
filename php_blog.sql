@@ -35,8 +35,15 @@ CREATE TABLE article(
 	updateDate DATETIME NOT NULL,
 	memberId INT(10) UNSIGNED NOT NULL,
 	boardId INT(10) UNSIGNED NOT NULL,
+	liked INT(10) UNSIGNED NOT NULL,
+	`count` INT(10) UNSIGNED NOT NULL,
 	title VARCHAR(100) NOT NULL,
 	`body` TEXT NOT NULL
+);
+
+CREATE TABLE articleAdditional(
+	memberId INT(10) UNSIGNED NOT NULL,
+	articleId INT(10) UNSIGNED NOT NULL
 );
 
 
@@ -96,6 +103,8 @@ SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 1,
 boardId = 1,
+liked = 0,
+`count`= 0,
 title = '제목1',
 `body`= '내용1';
 
@@ -158,14 +167,14 @@ SELECT * FROM article;
 
 
 
-SELECT COUNT(*) FROM article;
+SELECT * FROM article;
 
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-memberId = 1,
-boardId = 1,
+memberId = 2,
+boardId = 2,
 title = '테스트',
 `body`= '테스트';
 

@@ -1,7 +1,42 @@
+/* 노멀라이징 (시작) */
+
+body, ul, li{
+  
+  list-style: none;
+
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* 노멀라이징 (끝) */
+
+/* 라이브러리 (시작) */
+
+.row::after{
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.cell{
+  float: left;
+}
+
+/* 라이브러리 (끝) */
+
+
 div {
     font-size:1.3rem;
     font-weight: bold;
     color: peru;
+  }
+
+  .modify {
+    color: blue;
   }
   
   .delete {
@@ -20,3 +55,23 @@ div {
     display: inline-block;
     
   }
+
+  
+
+
+  /* article/list.php 페이지의 페이지 리스팅 (시작) */
+  
+  
+
+  .page-items {
+    
+    font-size: 18px;
+  }
+
+  .page-item {
+    
+
+
+  }
+
+  /* article/list.php 페이지의 페이지 리스팅 (끝) */

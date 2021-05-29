@@ -2,6 +2,13 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
+
+
+if(isset($_SESSION['loginedMemberId'])){
+    echo "잘못된 접근입니다.";
+    exit;
+}
+
 $loginPage = false;
 $pageTitle = "로그인";
 ?>
