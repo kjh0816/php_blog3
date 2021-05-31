@@ -2,10 +2,15 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
 
-if(!isset($_SESSION['loginedMemberId'])){
-    echo "로그인이 필요합니다.";
-    exit;
-}
+?>
+<?php if(!isset($_SESSION['loginedMemberId'])){ ?>
+    <script>
+    alert('로그인 후 이용해주세요.');
+    location.replace('../member/login.php');
+    </script>
+    
+<?php }?>
+<?php
 
 $memberId = $_SESSION['loginedMemberId'];
 
@@ -68,7 +73,7 @@ $pageTitle = "내 정보";
 </div>
 <hr>
 
-<div class ="userDeleteModify">
+<div class ="deleteModify">
 <button onclick="showInputModify()">정보 수정</button>
 <form action="modify.php">
     <input type="password" required placeholder="비밀번호 입력" style="width: 202px; display:none;" id="LoginPw1" name="loginPw">
@@ -81,7 +86,7 @@ $pageTitle = "내 정보";
 <form action="doQuit.php">
     <input type="password" required placeholder="비밀번호 입력" style="width: 202px; display:none;" id="LoginPw2" name="loginPw">
     <input  onclick="if(!confirm('정말 탈퇴하시겠습니까?')){
-    return false
+    return false;
     }" type="submit" value="회원 탈퇴" id="Btn2" style="width: 208px; display:none;">
 </form>
 

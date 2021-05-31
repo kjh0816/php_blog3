@@ -8,17 +8,17 @@ if(!isset($_GET['id'])){
     exit;
 }
 
-$id = intval($_GET['id']);
+$articleId = intval($_GET['id']);
 
 $sql = "
 SELECT * FROM article
-WHERE id = ${id};
+WHERE id = ${articleId};
 ";
 
 $article = DB__getRow($sql);
 
 if($article == null){
-    echo "${id}번 게시물은 존재하지 않습니다.";
+    echo "${articleId}번 게시물은 존재하지 않습니다.";
     exit;
 }
 
@@ -56,7 +56,7 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
     $sqlAddCount = "
     UPDATE article
     SET `count` = `count`+1
-    WHERE id = ${id};
+    WHERE id = ${articleId};
     "; 
 
     DB__update($sqlAddCount);
@@ -79,7 +79,7 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
         $sqlGetHeart = "
         SELECT digitalCode FROM articleLiked
         WHERE memberId = ${memberId}
-        AND articleId = ${id};
+        AND articleId = ${articleId};
         ";
 
         
@@ -94,7 +94,7 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
             $sqlInsertZero = "
             INSERT INTO articleLiked
             SET memberId = ${memberId},
-            articleId = ${id},
+            articleId = ${articleId},
             digitalCode = 0;
             ";
             
@@ -110,11 +110,11 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
     
     ?>
 
-    <!-- 좋아요 관련 (시작)  -->
+    <!-- 좋아요 관련 (끝))  -->
 
 <?php 
 $loginPage = true;
-$pageTitle = "${id}번 게시물 상세페이지";
+$pageTitle = "${articleId}번 게시물 상세페이지";
 ?>
 <hr>
 <?php require_once __DIR__ . "/../head.php";   
@@ -136,20 +136,38 @@ $pageTitle = "${id}번 게시물 상세페이지";
 <?php if($heart == 1){ ?>
     
     <!-- 값이 1인 경우, 붉은 하트를 보여줄 것 / 클릭 시 0(좋아요 해제)으로 바뀐다. -->
-    <a href="liked.php?memberId=<?=$memberId?>&articleId=<?=$id?>&digitalCode=0"><i style="color:red;" class="fas fa-heart"></i></a>
+    <a href="liked.php?memberId=<?=$memberId?>&articleId=<?=$articleId?>&digitalCode=0"><i style="color:red;" class="fas fa-heart"></i></a>
 
 <?php }else{ ?>  
     <!-- 값이 없거나 0인 경우, 회색 하트를 보여줄 것 / 클릭 시 1(좋아요)으로 바뀐다. -->
-    <a href="liked.php?memberId=<?=$memberId?>&articleId=<?=$id?>&digitalCode=1"><i class="far fa-heart"></i></a>
+    <a href="liked.php?memberId=<?=$memberId?>&articleId=<?=$articleId?>&digitalCode=1"><i class="far fa-heart"></i></a>
 
 
 <?php        } ?>
-<?=$article['liked']?><br>
+<?=$article['liked'];
+?>
+<br>
 <hr>
-
+<?php if($article['memberId'] == $_SESSION['loginedMemberId'] || $_SESSION['loginedMemberId'] == 1){?>
 <div>
-<a class="modify" href="modify.php?id=<?=$id?>">수정하기</a>
-<a class="delete" onClick="if(!confirm('이 게시물을 삭제하시겠습니까?')){return false}" href="doDelete.php?id=<?=$id?>">삭제하기</a>
+<a class="modify" href="modify.php?id=<?=$articleId?>">수정하기</a>
+<a class="delete" onClick="if(!confirm('이 게시물을 삭제하시겠습니까?')){return false}" href="doDelete.php?id=<?=$articleId?>">삭제하기</a>
 </div>
+<hr>
+<form action="/usr/reply/doWrite.php">
+<input type="hidden" name ="relId" value="<?=$articleId?>" >
+<textarea required placeholder="댓글을 입력해주세요." name="body" style="width:200px; height: 60px;"></textarea><br>
+<input type="submit" value="작성 완료">
+</form>
+<hr>
+<?php } ?>
+<?php 
+require_once __DIR__ . '/../reply/list.php';
+?>
+
+
+
+
+
 <?php require_once __DIR__ . "/../foot.php";   
 ?>

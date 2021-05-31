@@ -41,9 +41,10 @@ CREATE TABLE article(
 	`body` TEXT NOT NULL
 );
 
-CREATE TABLE articleAdditional(
+CREATE TABLE articleLiked(
 	memberId INT(10) UNSIGNED NOT NULL,
-	articleId INT(10) UNSIGNED NOT NULL
+	articleId INT(10) UNSIGNED NOT NULL,
+	digitalCode INT(1) UNSIGNED NOT NULL
 );
 
 
@@ -54,8 +55,30 @@ CREATE TABLE reply(
 	memberId INT(10) UNSIGNED NOT NULL,
 	relTypeCode VARCHAR(100) NOT NULL,   # relTypeCode = 'article' 고정
 	relId INT(10) UNSIGNED NOT NULL,     # relId = 게시물 id 
+	liked INT (10) UNSIGNED NOT NULL,
 	`body` TEXT NOT NULL
 );
+
+CREATE TABLE replyLiked(
+	memberId INT(10) UNSIGNED NOT NULL,
+	articleId INT(10) UNSIGNED NOT NULL,
+	replyId INT(10) UNSIGNED NOT NULL,
+	digitalCode INT(1) UNSIGNED NOT NULL
+);
+
+# 관리자 멤버
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+delStatus = 0,
+loginId = 'admin',
+loginpw = 'admin',
+`name` = '관리자',
+nickname = '관리자',
+cellphoneNo = '010-4921-9810',
+email = 'readshot2@gmail.com';
+
 
 
 INSERT INTO `member`
@@ -112,27 +135,14 @@ INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 1,
-boardId = 1,
+boardId = 2,
+liked = 0,
+`count`= 0,
 title = '제목2',
 `body`= '내용2';
 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 1,
-boardId = 1,
-title = '제목3',
-`body`= '내용3';
 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 1,
-boardId = 1,
-title = '제목4',
-`body`= '내용4';
-
-
+SELECT * FROM article WHERE 1=1 AND boardId = 2 AND title LIKE '%%' OR `body` LIKE '%%';
 
 INSERT INTO reply
 SET regDate = NOW(),
@@ -140,6 +150,7 @@ updateDate = NOW(),
 memberId = 1,
 relTypeCode = 'article',
 relId = 1,
+liked = 0,
 `body` = '댓글입니당1';
 
 INSERT INTO reply
@@ -148,6 +159,7 @@ updateDate = NOW(),
 memberId = 1,
 relTypeCode = 'article',
 relId = 1,
+liked = 0,
 `body` = '댓글입니당2';
 
 INSERT INTO reply
@@ -156,35 +168,16 @@ updateDate = NOW(),
 memberId = 1,
 relTypeCode = 'article',
 relId = 1,
+liked = 0,
 `body` = '댓글입니당3';
 
 
 
+SELECT * FROM article;
 SELECT * FROM `member`;
-SELECT * FROM board;
-SELECT * FROM article;
+SELECT * FROM reply;
 
-
-
-
-SELECT * FROM article;
-
-
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 2,
-boardId = 2,
-title = '테스트',
-`body`= '테스트';
-
-
-
-
-
-
-
-
-
+  SELECT * FROM reply
+  WHERE relId = 2;
 
 

@@ -40,6 +40,7 @@ div {
   }
   
   .delete {
+    font-weight: bold;
     color:red;
   }
 
@@ -51,7 +52,7 @@ div {
     
   }
 
-  .userDeleteModify{
+  .deleteModify{
     display: inline-block;
     
   }

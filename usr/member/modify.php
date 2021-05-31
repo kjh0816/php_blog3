@@ -3,10 +3,15 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/webInit.php';
 
 //  로그인 여부 확인, 비밀번호 일치 여부 확인.
 
-if(!isset($_SESSION['loginedMemberId'])){
-    echo "로그인 후 이용 가능합니다.";
-    exit;
-}
+?>
+<?php if(!isset($_SESSION['loginedMemberId'])){ ?>
+    <script>
+    alert('로그인 후 이용해주세요.');
+    location.replace('../member/login.php');
+    </script>
+    
+<?php }?>
+<?php
 
 $memberId = $_SESSION['loginedMemberId'];
 

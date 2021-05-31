@@ -87,3 +87,39 @@ function jsHistoryBackExit($msg = null) {
   echo "</script>";
   exit;
 }
+
+?>
+
+<!-- 권한 관련 함수 (시작) -->
+
+
+<?php function loginCheck(){ 
+
+  if(!isset($_GET['loginedMemberId'])){  ?>
+    <?php if(!isset($_SESSION['loginedMemberId'])){ ?>
+      <script>
+      alert('로그인 후 이용해주세요.');
+      location.replace('/usr/member/login.php');
+      </script>
+      
+  <?php }
+  }
+}
+?>
+
+
+<!-- 권한 관련 함수 (끝) -->
+
+
+
+<!-- 자바 스크립트 관련 함수 (시작) -->
+<script>
+function deleteConfirm(url){
+    if(confirm('삭제하시겠습니까?')){
+      location.replace(url);
+    }else{
+      return false;
+    }
+}
+</script>
+<!-- 자바 스크립트 관련 함수 (끝) -->

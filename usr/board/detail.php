@@ -20,7 +20,14 @@ WHERE id = ${boardId};
 
 $board = DB__getRow($sqlGetBoard);
 
+if($board == null){
+    echo "게시판이 존재하지 않습니다.";
+    exit;
+}
+
+
 $memberId = $board['memberId'];
+
 
 $sqlGetMember = "
 SELECT * FROM `member`
@@ -30,10 +37,7 @@ WHERE id = ${memberId};
 $member = DB__getRow($sqlGetMember);
 
 
-if($board == null){
-    echo "게시판이 존재하지 않습니다.";
-    exit;
-}
+
 
 ?>
 
@@ -51,13 +55,16 @@ require_once __DIR__ . '/../head.php';
 게시판 이름: <?=$board['name']?><br>
 게시판 코드: <?=$board['code']?><br>
 게시판 주인: <?=$member['nickname']?><br>
+게시판 생성일:<?=$board['regDate']?><br>
+게시판 수정일:<?=$board['updateDate']?><br>
 </div>
 <hr>
+<?php if($board['memberId'] == $_SESSION['loginedMemberId'] || $_SESSION['loginedMemberId'] == 1){?>
 <div>
 <span><a href="modify.php?id=<?=$boardId?>">수정하기</a></span>
 <span><a class="delete" onclick="if(!confirm('이 게시판을 삭제하시겠습니까?')){return false}" href="doDelete.php?id=<?=$boardId?>">삭제하기</a></span>
 </div>
-
+<?php } ?>
 
 
 
