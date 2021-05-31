@@ -111,6 +111,7 @@
         ?>
         
         <!-- 로그인한 회원이 작성한 댓글일 경우, 댓글 수정/삭제 버튼이 보임. -->
+        <?php if(isset($_SESSION['loginedMemberId'])){ ?>
         <?php if($reply['memberId'] == $_SESSION['loginedMemberId'] || $_SESSION['loginedMemberId'] == 1){?>
             <button onclick="toggleText(<?=$i?>)">수정하기</button>
             <button onclick="deleteConfirm('/usr/reply/doDelete.php?id=<?=$reply['id']?>')" class="delete">댓글 삭제</button>
@@ -119,7 +120,7 @@
             <textarea required placeholder="댓글을 입력해주세요." name="body" id="modifyReply<?=$i?>" style="display: none; width:200px; height: 60px;"></textarea>
             <input id="modifyBtn<?=$i?>" type="submit" value="완료" style="display: none;">
             </form>
-        <?php }?>
+        <?php } } ?>
         <hr>
 
   <?php } ?>

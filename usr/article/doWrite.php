@@ -1,10 +1,7 @@
 <?php 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
-if(!isset($_SESSION['loginedMemberId'])){
-    echo "로그인 후 이용 가능합니다.";
-    exit;
-}
+loginCheck();
 
 
 if(!isset($_GET['boardId'])){

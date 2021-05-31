@@ -49,7 +49,8 @@ $pageTitle = "[${board['name']}] 게시판 상세 보기";
 <?php  
 require_once __DIR__ . '/../head.php';
 ?>
-
+<a href="/usr/board/list.php">게시판 리스트</a>
+<hr>
 <div>
 게시판 번호: <?=$board['id']?><br>
 게시판 이름: <?=$board['name']?><br>

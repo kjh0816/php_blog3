@@ -2,16 +2,9 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php'; 
 ?>
 
+<?php
 
-
-<?php if(!isset($_SESSION['loginedMemberId'])){ ?>
-    <script>
-    alert('로그인 후 이용해주세요.');
-    location.replace('../member/login.php');
-    </script>
-    
-<?php }?>
-<?php 
+loginCheck(); 
 $memberId = $_SESSION['loginedMemberId'];
 
 

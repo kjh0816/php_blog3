@@ -42,7 +42,7 @@ function DB__delete($sql) {
 // Mysql CRUD 관련 함수 (끝)
 
 
-
+// INPUT값 검사 및 결과에 따른 페이지 이동 처리 함수 (시작)
 
 function getIntValueOr(&$value, $defaultValue) {
   if ( isset($value) ) {
@@ -88,6 +88,7 @@ function jsHistoryBackExit($msg = null) {
   exit;
 }
 
+// INPUT값 검사 및 결과에 따른 페이지 이동 처리 함수 (끝) 
 ?>
 
 <!-- 권한 관련 함수 (시작) -->
@@ -109,6 +110,8 @@ function jsHistoryBackExit($msg = null) {
 
 
 <!-- 권한 관련 함수 (끝) -->
+
+
 
 
 

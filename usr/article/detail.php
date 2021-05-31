@@ -2,13 +2,12 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
-
-if(!isset($_GET['id'])){
-    echo "id를 입력해주세요.";
-    exit;
+$articleId = getIntValueOr($_GET['id'], 0);
+if($articleId == 0){
+    jsHistoryBackExit("번호(id)를 입력해주세요.");
 }
 
-$articleId = intval($_GET['id']);
+
 
 $sql = "
 SELECT * FROM article
@@ -16,11 +15,10 @@ WHERE id = ${articleId};
 ";
 
 $article = DB__getRow($sql);
-
 if($article == null){
-    echo "${articleId}번 게시물은 존재하지 않습니다.";
-    exit;
+    jsHistoryBackExit("${articleId}번 게시물은 존재하지 않습니다.");
 }
+
 
 $sqlGetMemberById = "
 SELECT * FROM member
@@ -37,7 +35,6 @@ $member = DB__getRow($sqlGetMemberById);
 $board = DB__getRow($sqlGetBoardById);
 
 $memberId = $member['id'];
-
 ?>
 
 
@@ -68,11 +65,10 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
             // 빈 값
 
 }
-
-
-
     ?>
     <!-- 조회수 관련 (끝) -->
+
+
     <!-- 좋아요 관련 (시작)  -->
     <?php 
 
@@ -85,7 +81,8 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
         
 
         $array = DB__getRow($sqlGetHeart);
-        if(!empty($array)){
+        
+        if($array != null)  {
             
         $heart = $array['digitalCode'];
 
@@ -116,9 +113,10 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
 $loginPage = true;
 $pageTitle = "${articleId}번 게시물 상세페이지";
 ?>
-<hr>
+
 <?php require_once __DIR__ . "/../head.php";   
 ?>
+
 <div><a href="list.php">게시물 리스트</a></div>
 
 <hr>
@@ -144,10 +142,14 @@ $pageTitle = "${articleId}번 게시물 상세페이지";
 
 
 <?php        } ?>
-<?=$article['liked'];
+
+<?= 
+// 조회수
+$article['liked'];
 ?>
 <br>
 <hr>
+<?php if(isset($_SESSION['loginedMemberId'])){ ?>
 <?php if($article['memberId'] == $_SESSION['loginedMemberId'] || $_SESSION['loginedMemberId'] == 1){?>
 <div>
 <a class="modify" href="modify.php?id=<?=$articleId?>">수정하기</a>
@@ -160,14 +162,10 @@ $pageTitle = "${articleId}번 게시물 상세페이지";
 <input type="submit" value="작성 완료">
 </form>
 <hr>
-<?php } ?>
+<?php } } ?>
 <?php 
 require_once __DIR__ . '/../reply/list.php';
 ?>
-
-
-
-
 
 <?php require_once __DIR__ . "/../foot.php";   
 ?>

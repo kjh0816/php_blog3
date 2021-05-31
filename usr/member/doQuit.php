@@ -1,17 +1,14 @@
 <?php 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
-$memberId = $_SESSION['loginedMemberId'];
-if($memberId == null){
-    echo "로그인이 필요합니다.";
-    exit;
-}
+loginCheck();
 
 $sqlGetMemberById = "
 SELECT * FROM `member`
 WHERE id = ${memberId};
 ";
 
+$memberId = $_SESSION['loginedMemberId'];
 $member = DB__getRow($sqlGetMemberById);
 
 if(!isset($_GET['loginId'])){

@@ -1,17 +1,10 @@
 <?php 
-
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
-
 ?>
-<?php if(!isset($_SESSION['loginedMemberId'])){ ?>
-    <script>
-    alert('로그인 후 이용해주세요.');
-    location.replace('../member/login.php');
-    </script>
-    
-<?php }?>
 
 <?php
+
+loginCheck();
 
 if(!isset($_GET['id'])){
     echo "id를 입력해주세요.";

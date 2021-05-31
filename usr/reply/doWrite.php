@@ -1,18 +1,11 @@
 <?php 
 require_once $_SERVER['DOCUMENT_ROOT']. '/webInit.php';
-
 ?>
 
-<?php if(!isset($_SESSION['loginedMemberId'])){ ?>
-    <script>
-    alert('로그인 후 이용해주세요.');
-    location.replace('/usr/member/login.php');
-    </script>
-    
-<?php }?>
+
 <?php
 
-
+loginCheck();
 
 if(!isset($_GET['relId'])){
     echo "게시물이 존재하지 않습니다.";

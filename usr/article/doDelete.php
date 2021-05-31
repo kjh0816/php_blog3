@@ -1,38 +1,29 @@
 <?php 
-
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
-
 ?>
-<?php if(!isset($_SESSION['loginedMemberId'])){ ?>
-    <script>
-    alert('로그인 후 이용해주세요.');
-    location.replace('../member/login.php');
-    </script>
-    
-<?php }?>
+
 <?php
 
-if(!isset($_GET['id'])){
-    echo "id를 입력해주세요.";
-    exit;
-}
+loginCheck();
 
-$id = $_GET['id'];
+$articleId = getIntValueOr($_GET['id'], 0);
+if($articleId == 0){
+    jsHistoryBackExit("번호(id)를 입력해주세요.");
+}
 
 $sqlGetArticle = "
 SELECT * FROM article
-WHERE id = ${id};
+WHERE id = ${articleId};
 ";
 
 $article = DB__getRow($sqlGetArticle);
 if($article == null){
-    echo "${id}번 게시물이 존재하지 않습니다.";
-    exit;
+    jsHistoryBackExit("${articleId}번 게시물이 존재하지 않습니다.");
 }
 
 $sqlDeleteArticle = "
 DELETE FROM article
-WHERE id = ${id};
+WHERE id = ${articleId};
 ";
 ?>
 
@@ -49,15 +40,16 @@ WHERE id = ${id};
 
 <?php }else {?>
 
-<?php if($article['memberId'] != $_SESSION['loginedMemberId']){ ?>
+<?php if($article['memberId'] != $_SESSION['loginedMemberId']){ 
 
-        <script>
-        alert('권한이 없습니다.');
-        location.replace('detail.php?id=<?=$id?>');
-        </script>
+         
+        jsHistoryBackExit("권한이 없습니다.");
         
 
-    <?php }else{ ?>
+     }else{ ?>
+        
+        여기부터 하면 됨
+        
         <?php DB__delete($sqlDeleteArticle); ?>
         <script>
         alert('<?=$id?>번 게시물이 삭제되었습니다.');
