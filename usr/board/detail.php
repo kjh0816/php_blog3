@@ -2,14 +2,10 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
-if(!isset($_GET['id'])){
-    echo "게시판이 존재하지 않습니다.";
-    exit;
+$boardId = getIntValueOr($_GET['id'], 0);
+if($boardId == 0){
+    jsHistoryBackExit("게시판이 존재하지 않습니다.");
 }
-
-
-
-$boardId = $_GET['id'];
 
 
 
@@ -21,8 +17,7 @@ WHERE id = ${boardId};
 $board = DB__getRow($sqlGetBoard);
 
 if($board == null){
-    echo "게시판이 존재하지 않습니다.";
-    exit;
+    jsHistoryBackExit("게시판이 존재하지 않습니다.");
 }
 
 

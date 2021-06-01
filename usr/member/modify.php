@@ -4,12 +4,11 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/webInit.php';
 <?php
 
 loginCheck();
-
 $memberId = $_SESSION['loginedMemberId'];
 
-if(!isset($_GET['loginPw'])){
-    echo "비밀번호를 입력해주세요.";
-    exit;
+$loginPw = getStrValueOr($_GET['loginPw'], "");
+if(empty($loginPw)){
+    jsHistoryBackExit("로그인 비밀번호를 입력해주세요.");
 }
 
 $sqlGetMember = "
@@ -20,8 +19,7 @@ WHERE id = ${memberId};
 $member = DB__getRow($sqlGetMember);
 
 if($_GET['loginPw'] != $member['loginPw']){
-    echo "비밀번호가 일치하지 않습니다.";
-    exit;
+    jsHistoryBackExit("비밀번호가 일치하지 않습니다.");
 }
 
 

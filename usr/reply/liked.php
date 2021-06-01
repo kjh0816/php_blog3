@@ -7,26 +7,27 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/webInit.php';
 
 loginCheck();
 
-if(!isset($_GET['articleId'])){
+$articleId = getIntValueOr($_GET['articleId'], 0);
+if($articleId == 0){
     jsHistoryBackExit('게시물이 존재하지 않습니다.');
 }
 
-if(!isset($_GET['memberId'])){
+$memberId = getIntValueOr($_GET['memberId'], 0);
+if($memberId == 0){
     jsHistoryBackExit('댓글 작성자가 존재하지 않습니다.');
 }
 
-if(!isset($_GET['replyId'])){
+$replyId = getIntValueOr($_GET['replyId'], 0);
+if($replyId == 0){
     jsHistoryBackExit('댓글이 존재하지 않습니다.');
 }
 
-if(!isset($_GET['digitalCode'])){
+$digitalCode = getIntValueOr($_GET['digitalCode'], 3);
+if($digitalCode == 3){
     jsHistoryBackExit('잘못된 접근입니다.');
 }
 
-$articleId = $_GET['articleId'];
-$memberId = $_GET['memberId'];
-$replyId = $_GET['replyId'];
-$digitalCode = $_GET['digitalCode'];
+
 
 
 
@@ -40,11 +41,11 @@ AND replyId = ${replyId}
 "; 
 
 DB__update($sqlReplyChangeHeart);
-?>
-<script>
-    <?php if($digitalCode == 1){?>
 
-        <?php
+
+    if($digitalCode == 1){
+
+        
         $sqlAddReplyLiked = "
         UPDATE reply
         SET liked = liked + 1
@@ -52,14 +53,14 @@ DB__update($sqlReplyChangeHeart);
         ";    
         
         mysqli_query($dbConn, $sqlAddReplyLiked);
-            
-        ?>
         
-        alert('좋아요를 눌렀습니다.');
-        location.replace('/usr/article/detail.php?id=<?=$articleId?>')
-    <?php }else { ?>
+        jsLocationReplaceExit("/usr/article/detail.php?id=${articleId}", "좋아요를 눌렀습니다.");
+        
+        
+        
+      }else { 
 
-        <?php
+        
         $sqlRemoveReplyLiked = "
         UPDATE reply
         SET liked = liked - 1
@@ -67,10 +68,10 @@ DB__update($sqlReplyChangeHeart);
         ";    
         
         mysqli_query($dbConn, $sqlRemoveReplyLiked);
-            
-        ?>
 
-        alert('좋아요를 취소했습니다.');
-        location.replace('/usr/article/detail.php?id=<?=$articleId?>')
-    <?php } ?>
-</script>
+        jsLocationReplaceExit("/usr/article/detail.php?id=${articleId}", "좋아요를 취소했습니다.");
+            
+        
+
+
+    } ?>

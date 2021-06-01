@@ -30,31 +30,32 @@ WHERE id = ${articleId};
  
  <?php if($_SESSION['loginedMemberId'] == 1){ ?>
 
-    <?php DB__delete($sqlDeleteArticle); ?>
+    <?php 
 
-    <script>
-    alert('<?=$id?>번 게시물이 관리자 권한으로 삭제되었습니다.')
-    location.replace('list.php');
-    </script>
+    DB__delete($sqlDeleteArticle); 
+    
+    jsLocationReplaceExit("/usr/article/list.php", "${articleId}번 게시물이 관리자 권한으로 삭제되었습니다.");
+    ?>
+
+    
 
 
 <?php }else {?>
 
 <?php if($article['memberId'] != $_SESSION['loginedMemberId']){ 
-
          
         jsHistoryBackExit("권한이 없습니다.");
         
-
      }else{ ?>
         
-        여기부터 하면 됨
         
-        <?php DB__delete($sqlDeleteArticle); ?>
-        <script>
-        alert('<?=$id?>번 게시물이 삭제되었습니다.');
-        location.replace('list.php');
-        </script>
+        <?php 
+
+        DB__delete($sqlDeleteArticle);
+        jsLocationReplaceExit("/usr/article/list.php", "${articleId}번 게시물이 삭제되었습니다.");
+
+        ?>
+        
 
     <?php }?>
 <?php } ?>

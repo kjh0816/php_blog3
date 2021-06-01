@@ -16,7 +16,7 @@ $pageTitle = "회원가입";
 ?>
 
 <?php require_once __DIR__ . '/../head.php'?>
-<form action="doJoin.php">
+<form action="doJoin.php" method="post">
 로그인 아이디: <input required placeholder="로그인 아이디" type="text" name="loginId"><br>
 로그인 비밀번호: <input required placeholder="로그인 비밀번호" type="password" name="loginPw"><br>
 비밀번호 확인: <input required placeholder="로그인 비밀번호 재입력" type="password" name="loginPwConfirm"><br>

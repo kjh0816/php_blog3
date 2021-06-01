@@ -3,13 +3,10 @@ require_once $_SERVER['DOCUMENT_ROOT']. '/webInit.php';
 
 loginCheck();
 
-if(!isset($_GET['id'])){
+$replyId = getIntValueOr($_GET['id'], 0);
+if($replyId == 0){
     jsHistoryBackExit('댓글이 존재하지 않습니다.');
 }
-
-
-
-$replyId = $_GET['id'];
 
 
 

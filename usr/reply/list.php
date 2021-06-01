@@ -39,10 +39,13 @@
 
   <!-- 좋아요 관련 (시작)  -->
   <?php 
-
+  if(isset($_SESSION['loginedMemberId'])){
+  
+  $loginedMemberId = $_SESSION['loginedMemberId'];
+  
   $sqlGetReplyHeart = "
   SELECT digitalCode FROM replyLiked
-  WHERE memberId = ${memberId}
+  WHERE memberId = ${loginedMemberId}
   AND articleId = ${articleId}
   AND replyId = ${replyId}
   ";
@@ -50,7 +53,7 @@
 
 
   $replyArray = DB__getRow($sqlGetReplyHeart);
-  if(!empty($array)){
+  if(!empty($replyArray)){
       
   $replyHeart = $replyArray['digitalCode'];
 
@@ -58,7 +61,7 @@
     
     $sqlReplyInsertZero = "
     INSERT INTO replyLiked
-    SET memberId = ${memberId},
+    SET memberId = ${loginedMemberId},
     articleId = ${articleId},
     replyId = ${replyId},
     digitalCode = 0;
@@ -69,6 +72,9 @@
 
     $replyHeart = 0;
   }
+}else{
+  $replyHeart = 0;
+}
 
 
 
@@ -98,11 +104,11 @@
         <?php if($replyHeart == 1){ ?>
     
         <!-- 값이 1인 경우, 붉은 하트를 보여줄 것 / 클릭 시 0(좋아요 해제)으로 바뀐다. -->
-        <a href="/usr/reply/liked.php?memberId=<?=$reply['memberId']?>&articleId=<?=$reply['relId']?>&replyId=<?=$reply['id']?>&digitalCode=0"><i style="color:red;" class="fas fa-heart"></i></a>
+        <a href="/usr/reply/liked.php?memberId=<?=$loginedMemberId?>&articleId=<?=$reply['relId']?>&replyId=<?=$reply['id']?>&digitalCode=0"><i style="color:red;" class="fas fa-heart"></i></a>
 
         <?php }else{ ?>  
         <!-- 값이 없거나 0인 경우, 회색 하트를 보여줄 것 / 클릭 시 1(좋아요)으로 바뀐다. -->
-        <a href="/usr/reply/liked.php?memberId=<?=$reply['memberId']?>&articleId=<?=$reply['relId']?>&replyId=<?=$reply['id']?>&digitalCode=1"><i class="far fa-heart"></i></a>
+        <a href="/usr/reply/liked.php?memberId=<?=$loginedMemberId?>&articleId=<?=$reply['relId']?>&replyId=<?=$reply['id']?>&digitalCode=1"><i class="far fa-heart"></i></a>
 
 
         <?php        } ?>

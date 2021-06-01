@@ -2,27 +2,28 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
 loginCheck();
-
-
-if(!isset($_GET['boardId'])){
-    echo "게시판을 선택해주세요.";
-    exit;
-}
-
-if(!isset($_GET['title'])){
-    echo "제목(title)을 입력해주세요.";
-    exit;
-}
-
-if(!isset($_GET['body'])){
-    echo "내용(body)을 입력해주세요.";
-    exit;
-}
-
 $memberId = $_SESSION['loginedMemberId'];
-$boardId = $_GET['boardId'];
-$title = $_GET['title']; 
-$body = $_GET['body'];
+
+$boardId = getIntValueOr($_GET['boardId'], 0);
+if($boardId == 0){
+    jsHistoryBackExit("게시판을 선택해주세요.");
+}
+
+
+
+$title = getStrValueOr($_GET['title'], "");
+if(empty($title)){
+    jsHistoryBackExit("제목(title)을 입력해주세요.");
+}
+
+
+$body = getStrValueOr($_GET['body'], "");
+if(empty($body)){
+    jsHistoryBackExit("내용(body)을 입력해주세요.");
+}
+
+
+
 
 $sql = "
 INSERT INTO article
@@ -34,11 +35,9 @@ title = '${title}',
 `body` = '${body}';
 ";
 
-$id = DB__insert($sql);
+$articleId = DB__insert($sql);
+
+jsLocationReplaceExit("/usr/article/detail?id=${articleId}", "${articleId}번 게시물이 추가되었습니다.");
 
 ?>
 
-<script>
-    alert('<?=$id?>번 게시물이 추가되었습니다.');
-    location.replace('detail.php?id=<?=$id?>');
-</script>

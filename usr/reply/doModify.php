@@ -3,17 +3,18 @@ require_once $_SERVER['DOCUMENT_ROOT']. '/webInit.php';
 
 loginCheck();
 
-if(!isset($_GET['id'])){
+$replyId = getIntValueOr($_GET['id'], 0);
+if($replyId == 0){
     jsHistoryBackExit('댓글이 존재하지 않습니다.');
 }
 
 
-if(!isset($_GET['body'])){
-    jsHistoryBackExit('수정할 댓글을 적어주세요.');
+$body = getStrValueOr($_GET['body'], "");
+if(empty($body)){
+    jsHistoryBackExit('수정할 댓글을 입력해주세요.');
 }
 
-$replyId = $_GET['id'];
-$body = $_GET['body'];
+
 
 
 
@@ -41,7 +42,6 @@ if($_SESSION['loginedMemberId'] == $reply['memberId']){
     
     jsHistoryBackExit('댓글을 수정했습니다.');
     
-
 }else{
     jsHistoryBackExit('권한이 없습니다.');
 }

@@ -32,10 +32,8 @@ if(isset($_GET['boardId'])){
 
     
 
-    // boardId값이 존재할 경우, board가 존재하는지 확인
+    
     if($_GET['boardId'] != 0){
-
-
     $boardId = $_GET['boardId'];
 
 

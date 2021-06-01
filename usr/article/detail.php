@@ -72,21 +72,30 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
     <!-- 좋아요 관련 (시작)  -->
     <?php 
 
+        
+
+
+        if(isset($_SESSION['loginedMemberId'])){
+
+        $loginedMemberId = $_SESSION['loginedMemberId'];
+        
+        
         $sqlGetHeart = "
         SELECT digitalCode FROM articleLiked
-        WHERE memberId = ${memberId}
+        WHERE memberId = ${loginedMemberId}
         AND articleId = ${articleId};
         ";
 
-        
-
         $array = DB__getRow($sqlGetHeart);
         
-        if($array != null)  {
+        if(!empty($array))  {
+         
             
         $heart = $array['digitalCode'];
+        
 
         }else{
+        
             
             $sqlInsertZero = "
             INSERT INTO articleLiked
@@ -101,8 +110,10 @@ if(isset($_SESSION['loginedMemberId']) && !isset($_SESSION['$articleStr']) ){
             $heart = 0;
         }
         
-
-        
+    }else{
+        $heart = 0;
+    }
+       
     
     
     ?>
@@ -134,11 +145,11 @@ $pageTitle = "${articleId}번 게시물 상세페이지";
 <?php if($heart == 1){ ?>
     
     <!-- 값이 1인 경우, 붉은 하트를 보여줄 것 / 클릭 시 0(좋아요 해제)으로 바뀐다. -->
-    <a href="liked.php?memberId=<?=$memberId?>&articleId=<?=$articleId?>&digitalCode=0"><i style="color:red;" class="fas fa-heart"></i></a>
+    <a href="liked.php?memberId=<?=$loginedMemberId?>&articleId=<?=$articleId?>&digitalCode=0"><i style="color:red;" class="fas fa-heart"></i></a>
 
 <?php }else{ ?>  
     <!-- 값이 없거나 0인 경우, 회색 하트를 보여줄 것 / 클릭 시 1(좋아요)으로 바뀐다. -->
-    <a href="liked.php?memberId=<?=$memberId?>&articleId=<?=$articleId?>&digitalCode=1"><i class="far fa-heart"></i></a>
+    <a href="liked.php?memberId=<?=$loginedMemberId?>&articleId=<?=$articleId?>&digitalCode=1"><i class="far fa-heart"></i></a>
 
 
 <?php        } ?>
@@ -155,14 +166,19 @@ $article['liked'];
 <a class="modify" href="modify.php?id=<?=$articleId?>">수정하기</a>
 <a class="delete" onClick="if(!confirm('이 게시물을 삭제하시겠습니까?')){return false}" href="doDelete.php?id=<?=$articleId?>">삭제하기</a>
 </div>
-<hr>
+
+<?php } } ?>
+
+<?php if(isset($_SESSION['loginedMemberId'])){ ?>
+
+
 <form action="/usr/reply/doWrite.php">
 <input type="hidden" name ="relId" value="<?=$articleId?>" >
 <textarea required placeholder="댓글을 입력해주세요." name="body" style="width:200px; height: 60px;"></textarea><br>
 <input type="submit" value="작성 완료">
 </form>
 <hr>
-<?php } } ?>
+<?php } ?>
 <?php 
 require_once __DIR__ . '/../reply/list.php';
 ?>

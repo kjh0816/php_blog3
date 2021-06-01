@@ -3,56 +3,45 @@
 // member 관련 변수 입력 여부 확인(시작)
 require_once $_SERVER['DOCUMENT_ROOT'].'/webInit.php';
 
-if(!isset($_GET['loginId'])){
-    echo "로그인 아이디를 입력해주세요.";
-    exit;
+
+$loginId = getStrValueOr($_GET['loginId'], "");
+if(empty($loginId)){
+    jsHistoryBackExit("로그인 아이디를 입력해주세요.");
 }
 
-$loginId = $_GET['loginId'];
-
-if(!isset($_GET['loginPw'])){
-    echo "로그인 비밀번호를 입력해주세요.";
-    exit;
+$loginPw = getStrValueOr($_GET['loginPw'], "");
+if(empty($loginPw)){
+    jsHistoryBackExit("로그인 비밀번호를 입력해주세요.");
 }
 
-$loginPw = $_GET['loginPw'];
-
-if(!isset($_GET['loginPwConfirm'])){
-    echo "로그인 비밀번호를 한번 더 입력해주세요.";
-    exit;
+$loginPwConfirm = getStrValueOr($_GET['loginPwConfirm'], "");
+if(empty($loginPwConfirm)){
+    jsHistoryBackExit("로그인 비밀번호를 한 번 더 입력해주세요.");
 }
 
-$loginPwConfirm = $_GET['loginPwConfirm'];
 
 
-
-if(!isset($_GET['name'])){
-    echo "이름을 입력해주세요.";
-    exit;
+$name = getStrValueOr($_GET['name'], "");
+if(empty($name)){
+    jsHistoryBackExit("이름을 입력해주세요.");
 }
 
-$name = $_GET['name'];
-
-if(!isset($_GET['nickname'])){
-    echo "닉네임을 입력해주세요.";
-    exit;
+$nickname = getStrValueOr($_GET['nickname'], "");
+if(empty($nickname)){
+    jsHistoryBackExit("닉네임을 입력해주세요.");
 }
 
-$nickname = $_GET['nickname'];
-
-if(!isset($_GET['cellphoneNo'])){
-    echo "핸드폰 번호를 입력해주세요.";
-    exit;
+$cellphoneNo = getStrValueOr($_GET['cellphoneNo'], "");
+if(empty($cellphoneNo)){
+    jsHistoryBackExit("핸드폰 번호를 입력해주세요.");
 }
 
-$cellphoneNo = $_GET['cellphoneNo'];
-
-if(!isset($_GET['email'])){
-    echo "이메일을 입력해주세요.";
-    exit;
+$email = getStrValueOr($_GET['email'], "");
+if(empty($email)){
+    jsHistoryBackExit("이메일을 입력해주세요.");
 }
 
-$email = $_GET['email'];
+
 // member 관련 변수 입력 여부 확인(끝)
 
 // member 관련 변수 입력 여부 확인(시작)
@@ -64,8 +53,7 @@ WHERE loginId = '${loginId}';
 
 $member = DB__getRow($sqlGetMember);
 if($member != null){
-    echo "${loginId}는(은) 이미 존재하는 로그인 아이디입니다.";
-    exit;
+    jsHistoryBackExit("${loginId}는(은) 이미 존재하는 로그인 아이디입니다.");
 }
 
 $sqlGetMemberByEmailName = "
@@ -76,13 +64,11 @@ AND email = '${email}';
 
 $memberByEmailName = DB__getRow($sqlGetMemberByEmailName);
 if($memberByEmailName !=  null){
-    echo "이미 동일한 이름과 이메일로 가입한 계정이 존재합니다.";
-    exit;
+    jsHistoryBackExit("이미 동일한 이름과 이메일로 가입한 계정이 존재합니다.");
 }
 
 if($loginPw != $loginPwConfirm){
-    echo "입력하신 두 비밀번호가 다릅니다.";
-    exit;
+    jsHistoryBackExit("입력하신 두 비밀번호가 다릅니다.");
 }
 
 
@@ -101,11 +87,10 @@ email = '${email}';
 
 $memberId = DB__insert($sqlJoinComplete);
 
+
+jsLocationReplaceExit("/usr/member/login.php", "${nickname}님의 회원가입이 완료되었습니다.");
 ?>
 
-<script>
-alert('<?=$nickname?>님의 회원가입이 완료되었습니다.');
-location.replace('login.php');
-</script>
+
 
 

@@ -6,11 +6,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
 loginCheck();
 
-if(!isset($_GET['id'])){
-    echo "id를 입력해주세요.";
-    exit;
+$articleId = getIntValueOr($_GET['id'], 0);
+if($articleId == 0){
+    jsHistoryBackExit("게시물(id)이 존재하지 않습니다.");
 }
-$id = $_GET['id'];
 
 $sqlGetArticle = "
 SELECT * FROM article
@@ -19,18 +18,13 @@ WHERE id = ${id};
 
 $article = DB__getRow($sqlGetArticle);
 if($article == null){
-    echo "${id}번 게시물이 존재하지 않습니다.";
-    exit;
+    jsHistoryBackExit("게시물이 존재하지 않습니다.");
 }
 ?>
 
-<?php if($article['memberId'] != $_SESSION['loginedMemberId']){ ?>
-
-<script>
-alert('권한이 없습니다.');
-location.replace('detail.php?id=<?=$id?>');
-</script>
-<?php }?>
+<?php if($article['memberId'] != $_SESSION['loginedMemberId']){ 
+    jsLocationReplaceExit("/usr/article/detail?id=${articleId}", "권한이 없습니다.");
+ }?>
 
 <?php 
 $loginPage = false;

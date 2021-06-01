@@ -5,56 +5,46 @@ require_once $_SERVER['DOCUMENT_ROOT']. '/webInit.php';
 <?php
 
 loginCheck();
-$memberId = intval($_SESSION['loginedMemberId']);
+$memberId = $_SESSION['loginedMemberId'];
 
 
 
-if(!isset($_GET['loginPw'])){
-    echo "비밀번호를 입력해주세요.";
-    exit;
+
+
+$loginPw = getStrValueOr($_GET['loginPw'], "");
+if(empty($loginPw)){
+    jsHistoryBackExit("로그인 비밀번호를 입력해주세요.");
 }
 
-$loginPw = $_GET['loginPw'];
-
-if(!isset($_GET['loginPwConfirm'])){
-    echo "비밀번호를 입력해주세요.";
-    exit;
+$loginPwConfirm = getStrValueOr($_GET['loginPwConfirm'], "");
+if(empty($loginPwConfirm)){
+    jsHistoryBackExit("로그인 비밀번호를 한 번 더 입력해주세요.");
 }
 
-$loginPwConfirm = $_GET['loginPwConfirm'];
 
 
-if(!isset($_GET['name'])){
-    echo "이름을 입력해주세요.";
-    exit;
+$name = getStrValueOr($_GET['name'], "");
+if(empty($name)){
+    jsHistoryBackExit("이름을 입력해주세요.");
 }
 
-$name = $_GET['name'];
-
-if(!isset($_GET['nickname'])){
-    echo "닉네임을 입력해주세요.";
-    exit;
+$nickname = getStrValueOr($_GET['nickname'], "");
+if(empty($nickname)){
+    jsHistoryBackExit("닉네임을 입력해주세요.");
 }
 
-$nickname = $_GET['nickname'];
-
-if(!isset($_GET['cellphoneNo'])){
-    echo "핸드폰 번호를 입력해주세요.";
-    exit;
+$cellphoneNo = getStrValueOr($_GET['cellphoneNo'], "");
+if(empty($cellphoneNo)){
+    jsHistoryBackExit("핸드폰 번호를 입력해주세요.");
 }
 
-$cellphoneNo = $_GET['cellphoneNo'];
-
-if(!isset($_GET['email'])){
-    echo "이메일을 입력해주세요.";
-    exit;
+$email = getStrValueOr($_GET['email'], "");
+if(empty($email)){
+    jsHistoryBackExit("이메일을 입력해주세요.");
 }
-
-$email = $_GET['email'];
 
 if($loginPw != $loginPwConfirm){
-    echo "입력하신 두 비밀번호가 일치하지 않습니다.";
-    exit;
+    jsHistoryBackExit("입력하신 두 비밀번호가 일치하지 않습니다.");
 }
 
 $sqlModifyMember = "
@@ -73,9 +63,6 @@ WHERE id = ${memberId};
 
 DB__update($sqlModifyMember);
 
-
+jsLocationReplaceExit("/usr/member/user.php", "${nickname}님의 회원정보가 수정되었습니다.");
 ?>
-    <script>
-    alert('<?=$nickname?>님의 정보가 수정되었습니다.');
-    location.replace('user.php');
-    </script>
+    

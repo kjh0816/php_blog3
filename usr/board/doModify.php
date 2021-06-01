@@ -8,13 +8,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 loginCheck();
 $memberId = $_SESSION['loginedMemberId'];
 
-if(!isset($_GET['id'])){
-    echo "게시판이 존재하지 않습니다.";
-    exit;
+$boardId = getIntValueOr($_GET['id'], 0);
+if($boardId == 0){
+    jsHistoryBackExit("게시판이 존재하지 않습니다.");
 }
-
-
-$boardId = $_GET['id'];
 
 $sqlGetBoard = "
 SELECT * FROM board
@@ -24,26 +21,21 @@ WHERE id = ${boardId};
 $board = DB__getRow($sqlGetBoard);
 
 if($board['memberId'] != $memberId){
-    echo "권한이 없습니다.";
-    exit;
+    jsHistoryBackExit("권한이 없습니다.");
 }
 
 
 
-if(!isset($_GET['name'])){
-    echo "게시판 이름을 입력해주세요.";
-    exit;
+$name = getStrValueOr($_GET['name'], "");
+if(empty($name)){
+    jsHistoryBackExit("게시판 이름을 입력해주세요.");
 }
 
-$name = $_GET['name'];
 
-
-if(!isset($_GET['code'])){
-    echo "게시판 이름을 입력해주세요.";
-    exit;
+$code = getStrValueOr($_GET['code'], "");
+if(empty($code)){
+    jsHistoryBackExit("게시판 코드를 입력해주세요.");
 }
-
-$code = $_GET['code'];
 
 
 $sqlGetBoardByName = "
@@ -54,8 +46,8 @@ WHERE name = '${name}';
 
 $boardByName = DB__getRow($sqlGetBoardByName);
 if($boardByName != null){
-    echo "게시판 이름: ${name}이(가) 이미 존재합니다.";
-    exit;
+    jsHistoryBackExit("${name} 게시판이 이미 존재합니다.");
+    
 }
 
 $sqlGetBoardByCode = "
@@ -66,8 +58,7 @@ WHERE code = '${code}';
 
 $boardByCode = DB__getRow($sqlGetBoardByCode);
 if($boardByCode != null){
-    echo "게시판 코드: ${code}이(가) 이미 존재합니다.";
-    exit;
+    jsHistoryBackExit("${code} 게시판 코드가 이미 존재합니다.");
 }
 
 $sqlModifyBoard = "
@@ -81,8 +72,6 @@ WHERE id = ${boardId};
 ";
 
 DB__update($sqlModifyBoard);
+
+jsLocationReplaceExit("/usr/board/detail?id=${boardId}", "${boardId}번 게시판이 수정되었습니다.");
 ?>
-<script>
-alert('<?=$boardId?>번 게시판이 수정되었습니다.');
-location.replace('detail.php?id=<?=$boardId?>');
-</script>

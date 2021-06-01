@@ -13,10 +13,8 @@ SELECT * FROM board
 ";
 
 $boards = DB__getRows($sqlGetBoards);
-
-
-
 ?>
+
 <?php 
 $loginPage = true;
 $pageTitle = "게시물 작성";

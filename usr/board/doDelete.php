@@ -6,13 +6,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/webInit.php';
 
 loginCheck();
 
-if(!isset($_GET['id'])){
-    echo "게시판이 존재하지 않습니다.";
-    exit;
+$boardId = getIntValueOr($_GET['id'], 0);
+if($boardId == 0){
+    jsHistoryBackExit("게시판이 존재하지 않습니다.");
 }
-
-
-$boardId = $_GET['id'];
 
 
 
@@ -25,8 +22,7 @@ WHERE id = ${boardId};
 $board = DB__getRow($sqlGetBoard);
 
 if($board == null){
-    echo "게시판이 존재하지 않습니다.";
-    exit;
+    jsHistoryBackExit("게시판이 존재하지 않습니다.");
 }
 
 
@@ -43,30 +39,22 @@ WHERE id = ${boardId};
 
 <?php if($_SESSION['loginedMemberId'] == 1){ ?>
 
-<?php DB__delete($sqlDeleteBoard); ?>
+<?php DB__delete($sqlDeleteBoard); 
 
-<script>
-alert('<?=$boardId?>번 게시판이 관리자 권한으로 삭제되었습니다.');
-location.replace('list.php');
-</script>
+jsLocationReplaceExit("/usr/board/list.php", "${boardId}번 게시판이 관리자 권한으로 삭제되었습니다.");
 
 
-<?php }else {?>
+ }else { 
 
-<?php if($board['memberId'] != $_SESSION['loginedMemberId']){ ?>
+if($board['memberId'] != $_SESSION['loginedMemberId']){ 
 
-    <script>
-    alert('권한이 없습니다.');
-    location.replace('detail.php?id=<?=$boardId?>');
-    </script>
+    jsHistoryBackExit("권한이 없습니다.");
     
 
-<?php }else{ ?>
-    <?php DB__delete($sqlDeleteArticle); ?>
-    <script>
-    alert('<?=$boardId?>번 게시판이 삭제되었습니다.');
-    location.replace('list.php');
-    </script>
-
-<?php }?>
-<?php } ?>
+ }else{
+  
+    DB__delete($sqlDeleteArticle); 
+    
+    jsLocationReplaceExit("/usr/board/list.php", "${boardId}번 게시판이 삭제되었습니다.");
+    }
+ } ?>

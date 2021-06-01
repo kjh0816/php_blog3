@@ -177,7 +177,7 @@ SELECT * FROM article;
 SELECT * FROM `member`;
 SELECT * FROM reply;
 
-  SELECT * FROM reply
-  WHERE relId = 2;
+
+
 
 

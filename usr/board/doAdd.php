@@ -9,21 +9,16 @@ $memberId = $_SESSION['loginedMemberId'];
 
 
 
-if(!isset($_GET['name'])){
-    echo "게시판 이름을 입력해주세요.";
-    exit;
+$name = getStrValueOr($_GET['name'], "");
+if(empty($name)){
+    jsHistoryBackExit("게시판 이름을 입력해주세요.");
 }
 
 
-$name = $_GET['name'];
-
-
-if(!isset($_GET['code'])){
-    echo "게시판 이름을 입력해주세요.";
-    exit;
+$code = getStrValueOr($_GET['code'], "");
+if(empty($code)){
+    jsHistoryBackExit("게시판 코드를 입력해주세요.");
 }
-
-$code = $_GET['code'];
 
 
 $sqlGetBoardByName = "
@@ -34,8 +29,7 @@ WHERE name = '${name}';
 
 $boardByName = DB__getRow($sqlGetBoardByName);
 if($boardByName != null){
-    echo "게시판 이름: ${name}이(가) 이미 존재합니다.";
-    exit;
+    jsHistoryBackExit("${name} 게시판이 이미 존재합니다.");
 }
 
 $sqlGetBoardByCode = "
@@ -46,8 +40,7 @@ WHERE code = '${code}';
 
 $boardByCode = DB__getRow($sqlGetBoardByCode);
 if($boardByCode != null){
-    echo "게시판 코드: ${code}이(가) 이미 존재합니다.";
-    exit;
+    jsHistoryBackExit("${code} 게시판 코드가 이미 존재합니다.");
 }
 
 
@@ -61,9 +54,7 @@ memberId = ${memberId},
 ";
 
 $boardId = DB__insert($sqlAddBoard);
+
+jsLocationReplaceExit("/usr/board/detail?id=${boardId}", "${boardId}번 게시판이 추가되었습니다.");
 ?>
 
-<script>
-alert('<?=$boardId?>번 게시판이 추가되었습니다.');
-location.replace('detail.php?id=<?=$boardId?>');
-</script>
