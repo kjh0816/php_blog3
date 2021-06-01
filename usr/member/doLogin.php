@@ -3,15 +3,19 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webInit.php";
 
 
-$loginId = getStrValueOr($_POST['loginId'], "");
+
+$loginId = mysqli_real_escape_string($dbConn, $_POST['loginId']);
 if(empty($loginId)){
     jsHistoryBackExit("로그인 아이디를 입력해주세요.");
 }
 
-$loginPw = getStrValueOr($_POST['loginPw'], "");
+$loginPw = mysqli_real_escape_string($dbConn, $_POST['loginPw']);
 if(empty($loginPw)){
     jsHistoryBackExit("로그인 비밀번호를 입력해주세요.");
 }
+echo $loginId;
+echo $loginPw;
+exit;
 
 
 $sql = "
