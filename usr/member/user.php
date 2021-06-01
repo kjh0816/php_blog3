@@ -68,7 +68,7 @@ $pageTitle = "내 정보";
 
 <div class ="deleteModify">
 <button onclick="showInputModify()">정보 수정</button>
-<form action="modify.php">
+<form action="modify.php" method="post">
     <input type="password" required placeholder="비밀번호 입력" style="width: 202px; display:none;" id="LoginPw1" name="loginPw">
     <input  type="submit" value="수정페이지로 이동" id="Btn1" style="width: 208px; display:none;">
 </form>
@@ -76,7 +76,7 @@ $pageTitle = "내 정보";
 <div>
 <button class ="delete" onclick="showInputDelete()">회원 탈퇴</button>
 
-<form action="doQuit.php">
+<form action="doQuit.php" method="post">
     <input type="password" required placeholder="비밀번호 입력" style="width: 202px; display:none;" id="LoginPw2" name="loginPw">
     <input  onclick="if(!confirm('정말 탈퇴하시겠습니까?')){
     return false;

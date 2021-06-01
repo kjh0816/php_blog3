@@ -25,7 +25,7 @@ function checkid(){
 	}
 </script> -->
 
-<form action="doLogin.php" method="get">
+<form action="doLogin.php" method="post">
     <div>
     <span>로그인 아이디</span>
     <input required placeholder=" 로그인 아이디 입력" type="text" name="loginId" id="uid">

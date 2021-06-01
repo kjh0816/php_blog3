@@ -15,13 +15,12 @@ $member = DB__getRow($sqlGetMemberById);
 
 
 
-$loginPw = getStrValueOr($_GET['loginPw'], "");
+$loginPw = getStrValueOr($_POST['loginPw'], "");
 if(empty($loginPw)){
     jsHistoryBackExit("로그인 비밀번호를 입력해주세요.");
 }
 
 
-$loginPw = $_GET['loginPw'];
 
 if($member['loginPw'] != $loginPw){
     jsHistoryBackExit("비밀번호가 일치하지 않습니다.");

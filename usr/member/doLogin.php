@@ -3,12 +3,12 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webInit.php";
 
 
-$loginId = getStrValueOr($_GET['loginId'], "");
+$loginId = getStrValueOr($_POST['loginId'], "");
 if(empty($loginId)){
     jsHistoryBackExit("로그인 아이디를 입력해주세요.");
 }
 
-$loginPw = getStrValueOr($_GET['loginPw'], "");
+$loginPw = getStrValueOr($_POST['loginPw'], "");
 if(empty($loginPw)){
     jsHistoryBackExit("로그인 비밀번호를 입력해주세요.");
 }

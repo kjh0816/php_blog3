@@ -67,7 +67,6 @@ CREATE TABLE replyLiked(
 );
 
 # 관리자 멤버
-
 INSERT INTO `member`
 SET regDate = NOW(),
 updateDate = NOW(),
@@ -142,7 +141,6 @@ title = '제목2',
 `body`= '내용2';
 
 
-SELECT * FROM article WHERE 1=1 AND boardId = 2 AND title LIKE '%%' OR `body` LIKE '%%';
 
 INSERT INTO reply
 SET regDate = NOW(),
@@ -176,8 +174,6 @@ liked = 0,
 SELECT * FROM article;
 SELECT * FROM `member`;
 SELECT * FROM reply;
-
-
 
 
 
